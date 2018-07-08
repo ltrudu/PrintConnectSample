@@ -17,4 +17,21 @@ public enum PC_E_ROTATION {
     {
         return enumString;
     }
+
+    static public PC_E_ROTATION getRotation(int rotation)
+    {
+        switch (rotation)
+        {
+            case 0:
+                return ZERO;
+            case 90:
+                return NINETY;
+            case 180:
+                return ONEHUNDREDEIGHTY;
+            case 270:
+                return TWOHUNDREDSEVENTY;
+            default:
+                return ZERO;
+        }
+    }
 }

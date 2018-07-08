@@ -14,26 +14,19 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.zebra.printconnectenums.PC_E_ROTATION;
-import com.zebra.printconnectintents.PCGraphicPrint;
-import com.zebra.printconnectintents.PCGraphicPrintSettings;
-import com.zebra.printconnectintents.PCIntentsBaseSettings;
-import com.zebra.printconnectintents.PCLinePrintPassthroughPrint;
-import com.zebra.printconnectintents.PCLinePrintPassthroughPrintSettings;
-import com.zebra.printconnectintents.PCPassthroughPrint;
-import com.zebra.printconnectintents.PCPassthroughPrintSettings;
-import com.zebra.printconnectintents.PCPrinterStatus;
-import com.zebra.printconnectintents.PCTemplateFileNamePrint;
-import com.zebra.printconnectintents.PCTemplateFileNamePrintSettings;
-import com.zebra.printconnectintents.PCTemplateStringPrint;
-import com.zebra.printconnectintents.PCTemplateStringPrintSettings;
-import com.zebra.printconnectintents.PCUnselectPrinter;
+import com.zebra.printconnectenums.*;
+import com.zebra.printconnectintents.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
+
+import fr.w3blog.zpl.constant.ZebraFont;
+import fr.w3blog.zpl.model.ZebraLabel;
+import fr.w3blog.zpl.model.element.ZebraBarCode39;
+import fr.w3blog.zpl.model.element.ZebraText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -175,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         PCPrinterStatus printerStatus = new PCPrinterStatus(MainActivity.this);
         PCIntentsBaseSettings settings = new PCIntentsBaseSettings()
         {{
-            mCommandId = "unselectPrinter";
+            mCommandId = "printerstatus";
         }};
 
         printerStatus.execute(settings, new PCPrinterStatus.onPrinterStatusResult() {
@@ -205,32 +198,34 @@ public class MainActivity extends AppCompatActivity {
     private void passthrough() {
         mIntentStartDate = new Date();
 
+        ZebraLabel zebraLabel = new ZebraLabel(912, 912);
+        zebraLabel.setDefaultZebraFont(ZebraFont.ZEBRA_ZERO);
+
+        zebraLabel.addElement(new ZebraText(10, 84, "Product:", 14));
+        zebraLabel.addElement(new ZebraText(395, 85, "Camera", 14));
+
+        zebraLabel.addElement(new ZebraText(10, 161, "CA201212AA", 14));
+
+        //Add Code Bar 39
+        zebraLabel.addElement(new ZebraBarCode39(10, 297, "CA201212AA", 118, 2, 2));
+
+        zebraLabel.addElement(new ZebraText(10, 365, "Qté:", 11));
+        zebraLabel.addElement(new ZebraText(180, 365, "3", 11));
+        zebraLabel.addElement(new ZebraText(317, 365, "QA", 11));
+
+        zebraLabel.addElement(new ZebraText(10, 520, "Ref log:", 11));
+        zebraLabel.addElement(new ZebraText(180, 520, "0035", 11));
+        zebraLabel.addElement(new ZebraText(10, 596, "Ref client:", 11));
+        zebraLabel.addElement(new ZebraText(180, 599, "1234", 11));
+
+        final String zplCode = zebraLabel.getZplCode();
+
+
         PCPassthroughPrint passthroughPrint = new PCPassthroughPrint(MainActivity.this);
 
         PCPassthroughPrintSettings settings = new PCPassthroughPrintSettings()
         {{
-            mPassthroughData =   "\u0010CT~~CD,~CC^~CT~\n" +
-                    "^XA~TA000~JSN^LT0^MNW^MTD^PON^PMN^LH0,0^JMA^PR4,4~SD10^JUS^LRN^CI0^XZ\n" +
-                    "^XA\n" +
-                    "^MMT\n" +
-                    "^PW591\n" +
-                    "^LL0203\n" +
-                    "^LS0\n" +
-                    "^FT171,82^A0N,27,26^FH\\^FDBananas^FS\n" +
-                    "^FT222,107^A0N,17,16^FH\\^FD$0.99^FS\n" +
-                    "^FT424,163^A0N,23,24^FB82,1,0,R^FH\\^FD10^FS\n" +
-                    "^FT314,167^A0N,28,28^FH\\^FD$0.89^FS\n" +
-                    "^FT367,107^A0N,17,16^FH\\^FD8424245^FS\n" +
-                    "^FT471,138^A0N,14,14^FH\\^FDYou saved:^FS\n" +
-                    "^FO451,119^GB103,54,2^FS\n" +
-                    "^FT171,20^A0N,17,16^FH\\^FDPrintConnect Template Print Example^FS\n" +
-                    "^FT171,167^A0N,28,28^FH\\^FDFinal Price:^FS\n" +
-                    "^FT171,51^A0N,17,16^FH\\^FDProduct:^FS\n" +
-                    "^FT171,107^A0N,17,16^FH\\^FDMSRP:^FS\n" +
-                    "^FT508,163^A0N,23,24^FH\\^FD%^FS\n" +
-                    "^FT328,107^A0N,17,16^FH\\^FDUPC:^FS\n" +
-                    "^FO171,119^GB259,0,2^FS\n" +
-                    "^PQ1,0,1,Y^XZ\n";
+            mPassthroughData = zplCode;
         }};
 
         passthroughPrint.execute(settings, new PCPassthroughPrint.onPassthroughResult() {
@@ -312,6 +307,8 @@ public class MainActivity extends AppCompatActivity {
                 "^FT328,107^A0N,17,16^FH\\^FDUPC:^FS\n" +
                 "^FO171,119^GB259,0,2^FS\n" +
                 "^PQ1,0,1,Y^XZ\n";
+
+
 
         // Define a hash map of variable data
         // Strings used for keys will be replaced by their corresponding values in your template file's ZPL

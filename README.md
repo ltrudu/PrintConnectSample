@@ -36,3 +36,13 @@ Certain items of the Software may be subject to open source licenses. The open s
 15. U.S. GOVERNMENT END USERS RESTRICTED RIGHTS. This provision only applies to U.S. Government end users.� The Software is a �commercial item� as that term is defined at 48 C.F.R. Part 2.101, consisting of �commercial computer software� and �computer software documentation� as such terms are defined in 48 C.F.R. Part 252.227-7014(a)(1) and 48 C.F.R. Part 252.227-7014(a)(5), and used in 48 C.F.R. Part 12.212 and 48 C.F.R. Part 227.7202, as applicable.� Consistent with 48 C.F.R. Part 12.212, 48 C.F.R. Part 252.227-7015, 48 C.F.R. Part 227.7202-1 through 227.7202-4, 48 C.F.R. Part 52.227-19, and other relevant sections of the Code of Federal Regulations, as applicable, the Software is distributed and licensed to U.S. Government end users (a) only as a commercial item, and (b) with only those rights as are granted to all other end users pursuant to the terms and conditions contained herein.�	
 
 16. APPLICABLE LAW. This EULA is governed by the laws of the state of Illinois, without regard to its conflict of law provisions. This EULA shall not be governed by the UN Convention on Contracts for the International Sale of Goods, the application of which is expressly excluded.
+
+-----------------------------------------------------------------------------------------
+				External code licenses
+-----------------------------------------------------------------------------------------
+PrintConnectIntentSample uses the Zebra-zpl API to help create ZPL Files.
+The original code can be found here: https://github.com/w3blogfr/zebra-zpl
+Updated code to run on Android can be found here: https://github.com/ltrudu/zebra-zpl
+The library MIT License can be found here: https://github.com/w3blogfr/zebra-zpl/blob/master/LICENSE
+
+
