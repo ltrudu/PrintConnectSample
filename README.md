@@ -41,8 +41,11 @@ Certain items of the Software may be subject to open source licenses. The open s
 				External code licenses
 -----------------------------------------------------------------------------------------
 PrintConnectIntentSample uses the Zebra-zpl API to help create ZPL Files.
+
 The original code can be found here: https://github.com/w3blogfr/zebra-zpl
+
 Updated code to run on Android can be found here: https://github.com/ltrudu/zebra-zpl
+
 The library MIT License can be found here: https://github.com/w3blogfr/zebra-zpl/blob/master/LICENSE
 
 
