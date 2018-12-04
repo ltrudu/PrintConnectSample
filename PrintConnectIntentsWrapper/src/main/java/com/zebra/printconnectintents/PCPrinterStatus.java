@@ -69,6 +69,8 @@ public class PCPrinterStatus extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mPrinterStatusCallback != null)
                     {
                         mPrinterStatusCallback.error(errorMessage, resultCode, resultData, settings);

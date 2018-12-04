@@ -37,6 +37,8 @@ public class PCUnselectPrinter extends PCIntentsBase {
             return;
         }
 
+        mUnselectPrinterCallback = callback;
+
         /*
         Launch timeout mechanism
          */
@@ -65,6 +67,8 @@ public class PCUnselectPrinter extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mUnselectPrinterCallback != null)
                     {
                         mUnselectPrinterCallback.error(errorMessage, resultCode, resultData, settings);

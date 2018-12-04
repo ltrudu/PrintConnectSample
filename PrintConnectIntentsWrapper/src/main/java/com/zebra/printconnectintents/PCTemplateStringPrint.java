@@ -92,6 +92,8 @@ public class PCTemplateStringPrint extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mPrintTemplateStringCallback != null)
                     {
                         mPrintTemplateStringCallback.error(errorMessage, resultCode, resultData, settings);

@@ -60,4 +60,41 @@ public class PCConstants {
     public static final String PCIntentsNoZPLDataError = "Error: no zpl data.";
     public static final String PCIntentsNoFileNameError = "Error: no filename specified.";
     public static final String PCIntentsNoDataToPrintError = "Error: no data to print.";
+
+
+    // ResultCodes
+    public static final int PC_SUCCESS = 0;
+    public static final int PC_NO_PRINTER_SELECTED = 1;
+    public static final int PC_CONNECTION_ERROR = 2;
+    public static final int PC_TEMPLATE_READ_ERROR = 3;
+    public static final int PC_UNRECOVERABLE_ERROR = 4;
+    public static final int PC_GRAPHIC_READ_ERROR = 5;
+    public static final int PC_ILLEGAL_ARGUMENT_ERROR = 6;
+    public static final int PC_CLOUD_ACCESS_ERROR = 7;
+    public static final int PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR = 8;
+
+    public static String getErrorMessage(int resultCode) {
+        switch (resultCode) {
+            case PC_SUCCESS:
+                return "PC_SUCCESS";
+            case PC_NO_PRINTER_SELECTED:
+                return "PC_NO_PRINTER_SELECTED";
+            case PC_CONNECTION_ERROR:
+                return "PC_CONNECTION_ERROR";
+            case PC_TEMPLATE_READ_ERROR:
+                return "PC_TEMPLATE_READ_ERROR";
+            case PC_UNRECOVERABLE_ERROR:
+                return "PC_UNRECOVERABLE_ERROR";
+            case PC_GRAPHIC_READ_ERROR:
+                return "PC_GRAPHIC_READ_ERROR";
+            case PC_ILLEGAL_ARGUMENT_ERROR:
+                return "PC_ILLEGAL_ARGUMENT_ERROR";
+            case PC_CLOUD_ACCESS_ERROR:
+                return "PC_CLOUD_ACCESS_ERROR";
+            case PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR:
+                return "PC_UNSUPPORTED_GRAPHIC_TYPE_ERROR";
+            default:
+                return "Unsupported error code " + resultCode;
+        }
+    }
 }

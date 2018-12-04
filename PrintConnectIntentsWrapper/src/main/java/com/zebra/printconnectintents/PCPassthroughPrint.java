@@ -39,7 +39,7 @@ public class PCPassthroughPrint extends PCIntentsBase {
 
         mPassthroughCallback = callback;
 
-        if(settings.mPassthroughData.isEmpty())
+        if(settings.mPassthroughData == null || settings.mPassthroughData.isEmpty())
         {
             if(mPassthroughCallback != null)
             {
@@ -91,6 +91,8 @@ public class PCPassthroughPrint extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mPassthroughCallback != null)
                     {
                         mPassthroughCallback.error(errorMessage, resultCode, resultData, settings);

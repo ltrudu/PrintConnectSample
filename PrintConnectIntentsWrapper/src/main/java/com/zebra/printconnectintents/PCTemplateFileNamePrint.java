@@ -87,6 +87,8 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mPrintTemplateFileNameCallback != null)
                     {
                         mPrintTemplateFileNameCallback.error(errorMessage, resultCode, resultData, settings);

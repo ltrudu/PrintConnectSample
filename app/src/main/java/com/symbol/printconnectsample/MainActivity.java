@@ -4,15 +4,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zebra.printconnectenums.*;
 import com.zebra.printconnectintents.*;
@@ -20,13 +23,16 @@ import com.zebra.printconnectintents.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+
 
 import fr.w3blog.zpl.constant.ZebraFont;
 import fr.w3blog.zpl.model.ZebraLabel;
 import fr.w3blog.zpl.model.element.ZebraBarCode39;
 import fr.w3blog.zpl.model.element.ZebraText;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,6 +55,81 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        if(Intent.ACTION_VIEW.equals(intent.getAction())){
+            Uri uri = intent.getData();
+
+            String base64EncodedData = uri.getQueryParameter("template");
+            String base64CommaSeparatedVariableData = uri.getQueryParameter("variables");
+
+            // Decode template if found
+            if(base64EncodedData != null) {
+                byte[] templateAsByteArray = Base64.decode(base64EncodedData, Base64.DEFAULT);
+                if(templateAsByteArray == null)
+                {
+                    Log.d(TAG, "Print error: Could not decode template data byte array.");
+                    Toast.makeText(MainActivity.this, "Print error: Could not decode template data byte array.", Toast.LENGTH_LONG).show();
+                    finishAffinity();
+                    return;
+                }
+
+                String decodedTemplate = new String(templateAsByteArray, StandardCharsets.US_ASCII);
+
+                if(decodedTemplate == null)
+                {
+                    Log.d(TAG, "Print error: Could not interpret decoded template data to String.");
+                    Toast.makeText(MainActivity.this, "Print error: Could not interpret decoded template data to UTF-8 String.", Toast.LENGTH_LONG).show();
+                    finishAffinity();
+                    return;
+                }
+
+                // Decode variable data if found
+                HashMap<String, String> variableData = null;
+                if (base64CommaSeparatedVariableData != null) {
+                    byte[] dataAsByteArray = Base64.decode(base64CommaSeparatedVariableData, Base64.DEFAULT);
+                    if(dataAsByteArray == null)
+                    {
+                        Log.d(TAG, "Print error: Could not decode variable data byte array.");
+                        Toast.makeText(MainActivity.this, "Print error: Could not decode variable data byte array.", Toast.LENGTH_LONG).show();
+                        finishAffinity();
+                        return;
+                    }
+                    String decodedCommaSeparatedVariables = new String(dataAsByteArray, StandardCharsets.US_ASCII);
+                    if(decodedTemplate == null)
+                    {
+                        Log.d(TAG, "Print error: Could not interpret decoded variable data to String.");
+                        Toast.makeText(MainActivity.this, "Print error: Could not interpret decoded variable data to UTF-8 String.", Toast.LENGTH_LONG).show();
+                        finishAffinity();
+                        return;
+                    }
+
+                    String[] splittedArray = decodedCommaSeparatedVariables.split(";");
+                    if (splittedArray.length > 1) {
+                        variableData = new HashMap<String, String>();
+                        for (int i = 0; i < splittedArray.length; i = i + 2) {
+                            variableData.put(splittedArray[i], splittedArray[i + 1]);
+                        }
+                    }
+                    else
+                    {
+                        Log.d(TAG, "Print error: Could not find at least one key-value pair in the decoded variable data. Length=" + splittedArray.length);
+                        Toast.makeText(MainActivity.this, "Print error: Could not find at least one key-value pair in the decoded variable data. Length=" + splittedArray.length, Toast.LENGTH_LONG).show();
+                        finishAffinity();
+                        return;
+                    }
+                }
+
+                templatePrintWithContent(decodedTemplate, variableData);
+            }
+            else
+            {
+                Log.d(TAG, "Print error: " + "No template data found.");
+                Toast.makeText(MainActivity.this, "Print error: " + "No template data found.", Toast.LENGTH_LONG).show();
+                finishAffinity();
+            }
+        }
+
         setContentView(R.layout.activity_main);
 
         et_results = (TextView)findViewById(R.id.et_results);
@@ -110,6 +191,37 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mResults = "";
                 et_results.setText(mResults);
+            }
+        });
+    }
+
+    private void templatePrintWithContent(final String zplToPrint, final HashMap<String, String> variableData) {
+
+        PCTemplateStringPrint templateStringPrint = new PCTemplateStringPrint(this);
+
+        PCTemplateStringPrintSettings settings = new PCTemplateStringPrintSettings()
+        {{
+            mZPLTemplateString = zplToPrint;
+            mVariableData = variableData;
+        }};
+
+        templateStringPrint.execute(settings, new PCTemplateStringPrint.onPrintTemplateStringResult() {
+            @Override
+            public void success(PCTemplateStringPrintSettings settings) {
+                Log.d(TAG, "Template print string succeeded");
+                Toast.makeText(MainActivity.this, "Print succeeded", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void error(String errorMessage, int resultCode, Bundle resultData, PCTemplateStringPrintSettings settings) {
+                Log.e(TAG, "Error while trying to template string print: \n" + errorMessage);
+                Toast.makeText(MainActivity.this, "Error while trying to print: \n" + errorMessage, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void timeOut(PCTemplateStringPrintSettings settings) {
+                Log.e(TAG, "Print error: Timeout while trying to print.");
+                Toast.makeText(MainActivity.this, "Print error: Timeout while trying to print.", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -198,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
     private void passthrough() {
         mIntentStartDate = new Date();
 
+
         ZebraLabel zebraLabel = new ZebraLabel(912, 912);
         zebraLabel.setDefaultZebraFont(ZebraFont.ZEBRA_ZERO);
 
@@ -219,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
         zebraLabel.addElement(new ZebraText(180, 599, "1234", 11));
 
         final String zplCode = zebraLabel.getZplCode();
-
 
         PCPassthroughPrint passthroughPrint = new PCPassthroughPrint(MainActivity.this);
 
@@ -246,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
                 addLineToResults("Timeout while trying line passthrough");
             }
         });
+        //*/
     }
 
     private void linePrintPassThrough() {
@@ -255,7 +368,7 @@ public class MainActivity extends AppCompatActivity {
 
         PCLinePrintPassthroughPrintSettings settings = new PCLinePrintPassthroughPrintSettings()
         {{
-            mLineToPrint = "Hello Printer\n";
+            mLineToPrint = "Hello Printer\n€\n\n\n";
         }};
 
         linePrintPassthroughPrint.execute(settings, new PCLinePrintPassthroughPrint.onLinePrintPassthroughResult() {

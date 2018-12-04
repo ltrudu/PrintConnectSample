@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/PrintConnectIntentsWrapper/PrintConnectIntentsWrapper.iml" filepath="$PROJECT_DIR$/PrintConnectIntentsWrapper/PrintConnectIntentsWrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/PrintConnectSample.iml" filepath="$PROJECT_DIR$/PrintConnectSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/intentprint/intentprint.iml" filepath="$PROJECT_DIR$/intentprint/intentprint.iml" />
     </modules>
   </component>
 </project>
