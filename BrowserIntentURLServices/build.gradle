@@ -6,7 +6,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.zebra.intentprint"
+        applicationId "com.zebra.browserintenturl"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1

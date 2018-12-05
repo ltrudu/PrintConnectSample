@@ -1,4 +1,4 @@
-package com.zebra.intentprint;
+package com.zebra.browserintenturl;
 
 import org.junit.Test;
 

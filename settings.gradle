@@ -1,1 +1,1 @@
-include ':app', ':PrintConnectIntentsWrapper', ':intentprint'
+include ':app', ':PrintConnectIntentsWrapper', ':BrowserIntentURLServices'

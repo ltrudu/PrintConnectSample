@@ -1,11 +1,9 @@
-package com.zebra.intentprint;
+package com.zebra.browserintenturl;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
