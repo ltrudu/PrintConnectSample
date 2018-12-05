@@ -6,7 +6,7 @@ https://www.zebra.com/us/en/products/software/barcode-printers/link-os/print-con
 PrintConnect documentation (in the Intents section you'll find a description of the methods implemented by the wrapper):
 https://www.zebra.com/content/dam/zebra_new_ia/en-us/solutions-verticals/product/Software/Printer%20Software/Link-OS/print-connect/PC-UserGuide-P1082444-001.pdf
 
-PrintConnect is available on the Google play store, but you will find it in the shared folder.
+PrintConnect is available on the Google play store : https://play.google.com/store/apps/details?id=com.zebra.printconnect
 It must be installed on the device, then install intentprint-release.apk
 
 The source code of the wrapper is available at the following address:
