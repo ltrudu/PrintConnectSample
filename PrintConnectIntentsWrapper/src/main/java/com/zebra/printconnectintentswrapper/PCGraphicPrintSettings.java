@@ -1,6 +1,6 @@
-package com.zebra.printconnectintents;
+package com.zebra.printconnectintentswrapper;
 
-import com.zebra.printconnectenums.PC_E_ROTATION;
+import com.zebra.printconnectintentswrapperenums.PC_E_ROTATION;
 
 public class PCGraphicPrintSettings extends PCIntentsBaseSettings {
     /*

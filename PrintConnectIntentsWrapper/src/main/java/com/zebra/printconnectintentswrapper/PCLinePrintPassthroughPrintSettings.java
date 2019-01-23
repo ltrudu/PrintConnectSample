@@ -1,6 +1,4 @@
-package com.zebra.printconnectintents;
-
-import java.util.HashMap;
+package com.zebra.printconnectintentswrapper;
 
 public class PCLinePrintPassthroughPrintSettings extends PCIntentsBaseSettings {
     /*

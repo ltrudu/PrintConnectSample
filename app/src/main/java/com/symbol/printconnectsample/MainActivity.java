@@ -1,9 +1,6 @@
 package com.symbol.printconnectsample;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,12 +14,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zebra.printconnectenums.*;
-import com.zebra.printconnectintents.*;
+import com.zebra.printconnectintentswrapperenums.*;
+import com.zebra.printconnectintentswrapper.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;

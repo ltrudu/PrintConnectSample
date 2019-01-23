@@ -1,4 +1,4 @@
-package com.zebra.printconnectenums;
+package com.zebra.printconnectintentswrapperenums;
 
 public enum PC_E_ROTATION {
     ZERO("0"),

@@ -1,4 +1,4 @@
-package com.zebra.printconnectintents;
+package com.zebra.printconnectintentswrapper;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -9,27 +9,27 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-public class PCUnselectPrinter extends PCIntentsBase {
+public class PCPrinterStatus extends PCIntentsBase {
 
     /*
     An interface callback to be informed of the result
     of the print template intent
      */
-    public interface onUnselectPrinterResult
+    public interface onPrinterStatusResult
     {
-        void success(PCIntentsBaseSettings settings);
+        void success(PCIntentsBaseSettings settings, HashMap<String, String> printerStatusMap);
         void error(String errorMessage, int resultCode, Bundle resultData, PCIntentsBaseSettings settings);
         void timeOut(PCIntentsBaseSettings settings);
     }
 
-    private onUnselectPrinterResult mUnselectPrinterCallback = null;
+    private onPrinterStatusResult mPrinterStatusCallback = null;
 
-    public PCUnselectPrinter(Context aContext)
+    public PCPrinterStatus(Context aContext)
     {
         super(aContext);
     }
 
-    public void execute(PCIntentsBaseSettings settings, onUnselectPrinterResult callback)
+    public void execute(PCIntentsBaseSettings settings, onPrinterStatusResult callback)
     {
         if(callback == null)
         {
@@ -37,20 +37,20 @@ public class PCUnselectPrinter extends PCIntentsBase {
             return;
         }
 
-        mUnselectPrinterCallback = callback;
+        mPrinterStatusCallback = callback;
 
         /*
         Launch timeout mechanism
          */
         super.execute(settings);
 
-        UnselectPrinter(settings);
+        GetPrinterStatus(settings);
     }
 
-    private void UnselectPrinter(final PCIntentsBaseSettings settings)
+    private void GetPrinterStatus(final PCIntentsBaseSettings settings)
     {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCUnselectPrinterService));
+        intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCPrinterStatusService));
 
         ResultReceiver receiver = buildIPCSafeReceiver(new ResultReceiver(null) {
             @Override
@@ -59,9 +59,10 @@ public class PCUnselectPrinter extends PCIntentsBase {
                 cleanAll();
                 if (resultCode == 0) {
                     // Result code 0 indicates success
-                    if(mUnselectPrinterCallback != null)
+                    if(mPrinterStatusCallback != null)
                     {
-                        mUnselectPrinterCallback.success(settings);
+                        HashMap<String, String> printerStatusMap = (HashMap<String, String>)resultData.getSerializable(PCConstants.PCPrinterStatusMap);
+                        mPrinterStatusCallback.success(settings, printerStatusMap);
                     }
                 } else {
                     // Handle unsuccessful print
@@ -69,9 +70,9 @@ public class PCUnselectPrinter extends PCIntentsBase {
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
                     if(errorMessage == null)
                         errorMessage = PCConstants.getErrorMessage(resultCode);
-                    if(mUnselectPrinterCallback != null)
+                    if(mPrinterStatusCallback != null)
                     {
-                        mUnselectPrinterCallback.error(errorMessage, resultCode, resultData, settings);
+                        mPrinterStatusCallback.error(errorMessage, resultCode, resultData, settings);
                     }
                 }
             }
@@ -82,9 +83,9 @@ public class PCUnselectPrinter extends PCIntentsBase {
 
     @Override
     protected void onTimeOut(PCIntentsBaseSettings settings) {
-        if(mUnselectPrinterCallback != null)
+        if(mPrinterStatusCallback != null)
         {
-            mUnselectPrinterCallback.timeOut(settings);
+            mPrinterStatusCallback.timeOut(settings);
         }
     }
 }

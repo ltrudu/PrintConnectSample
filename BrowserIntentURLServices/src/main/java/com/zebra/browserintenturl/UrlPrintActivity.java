@@ -9,16 +9,16 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zebra.printconnectintents.PCIntentsBaseSettings;
-import com.zebra.printconnectintents.PCLinePrintPassthroughPrint;
-import com.zebra.printconnectintents.PCLinePrintPassthroughPrintSettings;
-import com.zebra.printconnectintents.PCPassthroughPrint;
-import com.zebra.printconnectintents.PCPassthroughPrintSettings;
-import com.zebra.printconnectintents.PCTemplateFileNamePrint;
-import com.zebra.printconnectintents.PCTemplateFileNamePrintSettings;
-import com.zebra.printconnectintents.PCTemplateStringPrint;
-import com.zebra.printconnectintents.PCTemplateStringPrintSettings;
-import com.zebra.printconnectintents.PCUnselectPrinter;
+import com.zebra.printconnectintentswrapper.PCIntentsBaseSettings;
+import com.zebra.printconnectintentswrapper.PCLinePrintPassthroughPrint;
+import com.zebra.printconnectintentswrapper.PCLinePrintPassthroughPrintSettings;
+import com.zebra.printconnectintentswrapper.PCPassthroughPrint;
+import com.zebra.printconnectintentswrapper.PCPassthroughPrintSettings;
+import com.zebra.printconnectintentswrapper.PCTemplateFileNamePrint;
+import com.zebra.printconnectintentswrapper.PCTemplateFileNamePrintSettings;
+import com.zebra.printconnectintentswrapper.PCTemplateStringPrint;
+import com.zebra.printconnectintentswrapper.PCTemplateStringPrintSettings;
+import com.zebra.printconnectintentswrapper.PCUnselectPrinter;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;

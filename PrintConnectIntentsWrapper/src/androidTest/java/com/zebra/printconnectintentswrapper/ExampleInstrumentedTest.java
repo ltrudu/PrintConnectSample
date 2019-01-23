@@ -1,4 +1,4 @@
-package com.zebra.printconnectintents;
+package com.zebra.printconnectintentswrapper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

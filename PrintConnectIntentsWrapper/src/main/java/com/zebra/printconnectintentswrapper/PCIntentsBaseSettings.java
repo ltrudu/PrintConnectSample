@@ -1,4 +1,4 @@
-package com.zebra.printconnectintents;
+package com.zebra.printconnectintentswrapper;
 
 public class PCIntentsBaseSettings
 {

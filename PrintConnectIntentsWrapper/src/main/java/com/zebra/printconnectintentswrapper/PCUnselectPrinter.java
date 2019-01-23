@@ -1,4 +1,4 @@
-package com.zebra.printconnectintents;
+package com.zebra.printconnectintentswrapper;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,30 +7,27 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-
-public class PCPrinterStatus extends PCIntentsBase {
+public class PCUnselectPrinter extends PCIntentsBase {
 
     /*
     An interface callback to be informed of the result
     of the print template intent
      */
-    public interface onPrinterStatusResult
+    public interface onUnselectPrinterResult
     {
-        void success(PCIntentsBaseSettings settings, HashMap<String, String> printerStatusMap);
+        void success(PCIntentsBaseSettings settings);
         void error(String errorMessage, int resultCode, Bundle resultData, PCIntentsBaseSettings settings);
         void timeOut(PCIntentsBaseSettings settings);
     }
 
-    private onPrinterStatusResult mPrinterStatusCallback = null;
+    private onUnselectPrinterResult mUnselectPrinterCallback = null;
 
-    public PCPrinterStatus(Context aContext)
+    public PCUnselectPrinter(Context aContext)
     {
         super(aContext);
     }
 
-    public void execute(PCIntentsBaseSettings settings, onPrinterStatusResult callback)
+    public void execute(PCIntentsBaseSettings settings, onUnselectPrinterResult callback)
     {
         if(callback == null)
         {
@@ -38,20 +35,20 @@ public class PCPrinterStatus extends PCIntentsBase {
             return;
         }
 
-        mPrinterStatusCallback = callback;
+        mUnselectPrinterCallback = callback;
 
         /*
         Launch timeout mechanism
          */
         super.execute(settings);
 
-        GetPrinterStatus(settings);
+        UnselectPrinter(settings);
     }
 
-    private void GetPrinterStatus(final PCIntentsBaseSettings settings)
+    private void UnselectPrinter(final PCIntentsBaseSettings settings)
     {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCPrinterStatusService));
+        intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCUnselectPrinterService));
 
         ResultReceiver receiver = buildIPCSafeReceiver(new ResultReceiver(null) {
             @Override
@@ -60,10 +57,9 @@ public class PCPrinterStatus extends PCIntentsBase {
                 cleanAll();
                 if (resultCode == 0) {
                     // Result code 0 indicates success
-                    if(mPrinterStatusCallback != null)
+                    if(mUnselectPrinterCallback != null)
                     {
-                        HashMap<String, String> printerStatusMap = (HashMap<String, String>)resultData.getSerializable(PCConstants.PCPrinterStatusMap);
-                        mPrinterStatusCallback.success(settings, printerStatusMap);
+                        mUnselectPrinterCallback.success(settings);
                     }
                 } else {
                     // Handle unsuccessful print
@@ -71,9 +67,9 @@ public class PCPrinterStatus extends PCIntentsBase {
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
                     if(errorMessage == null)
                         errorMessage = PCConstants.getErrorMessage(resultCode);
-                    if(mPrinterStatusCallback != null)
+                    if(mUnselectPrinterCallback != null)
                     {
-                        mPrinterStatusCallback.error(errorMessage, resultCode, resultData, settings);
+                        mUnselectPrinterCallback.error(errorMessage, resultCode, resultData, settings);
                     }
                 }
             }
@@ -84,9 +80,9 @@ public class PCPrinterStatus extends PCIntentsBase {
 
     @Override
     protected void onTimeOut(PCIntentsBaseSettings settings) {
-        if(mPrinterStatusCallback != null)
+        if(mUnselectPrinterCallback != null)
         {
-            mPrinterStatusCallback.timeOut(settings);
+            mUnselectPrinterCallback.timeOut(settings);
         }
     }
 }
