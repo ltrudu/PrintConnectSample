@@ -653,7 +653,19 @@ public class UrlPrintActivity extends Activity {
             }
         }
         if(quit)
+        {
+            //moveTaskToBack(false);
+
+            //super.onBackPressed();
+
+            //finishAffinity();
+            //android.os.Process.killProcess(android.os.Process.myPid());
+            //System.exit(0);
+
+            //finishAndRemoveTask();
+
             finishAffinity();
+        }
     }
 
     private void templatePrintWithContent(final String zplToPrint, final HashMap<String, String> variableData) {
