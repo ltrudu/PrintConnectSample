@@ -1,5 +1,7 @@
 package com.zebra.printconnectintentswrapper;
 
+import com.zebra.printconnectintentswrapperenums.PC_E_FILEMODE;
+
 import java.util.HashMap;
 
 public class PCTemplateFileNamePrintSettings extends PCIntentsBaseSettings {
@@ -13,5 +15,12 @@ public class PCTemplateFileNamePrintSettings extends PCIntentsBaseSettings {
     Keep it to null if there are no variable in your template
      */
     public HashMap<String,String> mVariableData = null;
+
+    /*
+    Define where the file is located:
+        - on the printer
+        - on the device
+     */
+    public PC_E_FILEMODE mFileMode = PC_E_FILEMODE.FILE_SYSTEM;
 }
 

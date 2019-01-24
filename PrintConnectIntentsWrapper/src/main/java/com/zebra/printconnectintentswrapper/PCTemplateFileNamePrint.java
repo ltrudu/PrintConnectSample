@@ -7,7 +7,11 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class PCTemplateFileNamePrint extends PCIntentsBase {
 
@@ -47,25 +51,43 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
             }
         }
 
-        File myFile = new File(settings.mTemplateFileName);
-        if(myFile.exists() == false)
-        {
-            if(mPrintTemplateFileNameCallback != null)
-            {
-                mPrintTemplateFileNameCallback.error(PCConstants.PCIntentsFileNotFoundError, -1, null, settings);
-            }
-        }
-
-
         /*
         Launch timeout mechanism
          */
         super.execute(settings);
 
-        PrintTemplateFileName(settings);
+        /*
+        Print file
+         */
+        switch (settings.mFileMode)
+        {
+            case PRINTER:
+                Log.d(TAG, "Printing from printer memory:" + settings.mTemplateFileName);
+                PrintTemplateFileNameFromPrinterFlashMemory(settings);
+                break;
+            case FILE_SYSTEM:
+                Log.d(TAG, "Printing from file system: " + settings.mTemplateFileName);
+                PrintTemplateFileNameFromFileSystem(settings);
+        }
     }
 
-    private void PrintTemplateFileName(final PCTemplateFileNamePrintSettings settings)
+    private String getFileStringFromFileSystem(PCTemplateFileNamePrintSettings settings)
+            throws IOException
+    {
+        String zplString = "";
+        StringBuilder strb = new StringBuilder();
+        BufferedReader bfr = new BufferedReader(new FileReader(settings.mTemplateFileName));
+        String line = "";
+        while ((line = bfr.readLine()) != null) {
+            strb.append(line);
+        }
+        bfr.close();
+        zplString = strb.toString();
+        Log.d(TAG, "String read from file: \n" + zplString.toString());
+        return zplString;
+    }
+
+    private void PrintTemplateFileNameFromPrinterFlashMemory(final PCTemplateFileNamePrintSettings settings)
     {
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCTemplatePrintService));
@@ -98,6 +120,93 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
         });
         intent.putExtra(PCConstants.PCTemplatePrintServiceResultReceiver, receiver);
         mContext.startService(intent);
+    }
+
+    private void PrintTemplateFileNameFromFileSystem(final PCTemplateFileNamePrintSettings settings)
+    {
+        // Check if the file exists
+        File myFile = new File(settings.mTemplateFileName);
+        if (!myFile.exists())
+        {
+            if (this.mPrintTemplateFileNameCallback != null) {
+                this.mPrintTemplateFileNameCallback.error("File not found", -1, null, settings);
+            }
+            cleanAll();
+            return;
+        }
+        // Retrieve ZPL content as String
+        String sZPLTemplateString = "";
+        try
+        {
+            sZPLTemplateString = getFileStringFromFileSystem(settings);
+        }
+        catch (IOException e)
+        {
+            if (this.mPrintTemplateFileNameCallback != null) {
+                this.mPrintTemplateFileNameCallback.error(e.getMessage(), -1, null, settings);
+            }
+            cleanAll();
+            return;
+        }
+        if ((sZPLTemplateString == null) || (sZPLTemplateString.isEmpty()))
+        {
+            if (this.mPrintTemplateFileNameCallback != null) {
+                this.mPrintTemplateFileNameCallback.error("Error: no zpl data.", -1, null, settings);
+            }
+            cleanAll();
+            return;
+        }
+        // Convert the string to bytes array from the file content treated as an UTF-8 encoded String
+        byte[] templateBytes = null;
+        try
+        {
+            templateBytes = sZPLTemplateString.getBytes("UTF-8");
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            if (this.mPrintTemplateFileNameCallback != null) {
+                this.mPrintTemplateFileNameCallback.error(e.getMessage(), -1, null, settings);
+            }
+            cleanAll();
+            return;
+        }
+
+        // Create the PrintConnect Intent
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName("com.zebra.printconnect", "com.zebra.printconnect.print.TemplatePrintWithContentService"));
+        // Set template data
+        intent.putExtra("com.zebra.printconnect.PrintService.TEMPLATE_DATA", templateBytes);
+        // Set variable data
+        if ((settings.mVariableData != null) && (settings.mVariableData.size() > 0)) {
+            intent.putExtra("com.zebra.printconnect.PrintService.VARIABLE_DATA", settings.mVariableData);
+        }
+        // Build result receiver to handle success and error
+        ResultReceiver receiver = buildIPCSafeReceiver(new ResultReceiver(null)
+        {
+            protected void onReceiveResult(int resultCode, Bundle resultData)
+            {
+                PCTemplateFileNamePrint.this.cleanAll();
+                if (resultCode == 0)
+                {
+                    if (PCTemplateFileNamePrint.this.mPrintTemplateFileNameCallback != null) {
+                        PCTemplateFileNamePrint.this.mPrintTemplateFileNameCallback.success(settings);
+                    }
+                }
+                else
+                {
+                    String errorMessage = resultData.getString("com.zebra.printconnect.PrintService.ERROR_MESSAGE");
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
+                    if (PCTemplateFileNamePrint.this.mPrintTemplateFileNameCallback != null) {
+                        PCTemplateFileNamePrint.this.mPrintTemplateFileNameCallback.error(errorMessage, resultCode, resultData, settings);
+                    }
+                }
+            }
+        });
+        // Register receiver for success and error handling
+        intent.putExtra("com.zebra.printconnect.PrintService.RESULT_RECEIVER", receiver);
+        // Send intent to PrintConnect
+        this.mContext.startService(intent);
     }
 
     @Override
