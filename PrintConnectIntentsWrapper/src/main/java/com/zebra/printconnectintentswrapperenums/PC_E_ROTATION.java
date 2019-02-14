@@ -18,6 +18,11 @@ public enum PC_E_ROTATION {
         return enumString;
     }
 
+    public int toInt()
+    {
+        return Integer.valueOf(enumString);
+    }
+
     static public PC_E_ROTATION getRotation(int rotation)
     {
         switch (rotation)

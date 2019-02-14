@@ -27,7 +27,7 @@ public abstract class PCIntentsBase {
     class to prevent waiting to loong for DW in case
     of problem
      */
-    protected Handler mTimeOutHandler = new Handler();
+    protected Handler mTimeOutHandler;
 
     /*
     What will be done at the end of the TimeOut
@@ -43,6 +43,7 @@ public abstract class PCIntentsBase {
     public PCIntentsBase(Context aContext)
     {
         mContext = aContext;
+        mTimeOutHandler = new Handler(mContext.getMainLooper());
     }
 
 

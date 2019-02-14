@@ -18,7 +18,7 @@ public class PCTemplateFileNamePrintSettings extends PCIntentsBaseSettings {
 
     /*
     Define where the file is located:
-        - on the printer
+        - on the PrintConnect configurated folder
         - on the device
      */
     public PC_E_FILEMODE mFileMode = PC_E_FILEMODE.FILE_SYSTEM;

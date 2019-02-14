@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -362,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
 
         PCLinePrintPassthroughPrintSettings settings = new PCLinePrintPassthroughPrintSettings()
         {{
-            mLineToPrint = "Hello Printer\n€\n\n\n";
+            mLineToPrint = "";//"Hello Printer\n€\n\n\n";
         }};
 
         linePrintPassthroughPrint.execute(settings, new PCLinePrintPassthroughPrint.onLinePrintPassthroughResult() {
@@ -459,7 +460,8 @@ public class MainActivity extends AppCompatActivity {
 
         PCTemplateFileNamePrintSettings settings = new PCTemplateFileNamePrintSettings()
         {{
-            mTemplateFileName = "/sdcard/test.zpl";
+            mTemplateFileName = "HelloWorld.zpl";
+            mFileMode = PC_E_FILEMODE.PRINTCONNECTCONFIGFOLDER;
         }};
 
         templateFileNamePrint.execute(settings, new PCTemplateFileNamePrint.onPrintFileNameResult() {
@@ -471,14 +473,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void error(String errorMessage, int resultCode, Bundle resultData, PCTemplateFileNamePrintSettings settings) {
-                addLineToResults("Error while trying to print filename: \n" + errorMessage);
+                addLineToResults("Error while trying to print filename: " + settings.mTemplateFileName + "\n" + errorMessage);
                 addTotalTimeToResults();
 
             }
 
             @Override
             public void timeOut(PCTemplateFileNamePrintSettings settings) {
-                addLineToResults("Timeout while trying to print filename");
+                addLineToResults("Timeout while trying to print filename: "+ settings.mTemplateFileName);
             }
         });
     }
@@ -490,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
 
         PCGraphicPrintSettings settings = new PCGraphicPrintSettings()
         {{
-            mFileName = "/sdcard/zebra.jpg";
+            mFileName = "ZebraLogo.jpg";
             mRotation = PC_E_ROTATION.ZERO;
             mMarginTop = 10;
             mMarginLeft = 0;

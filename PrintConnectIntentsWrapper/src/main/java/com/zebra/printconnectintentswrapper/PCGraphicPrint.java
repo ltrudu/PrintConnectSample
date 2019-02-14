@@ -47,16 +47,6 @@ public class PCGraphicPrint extends PCIntentsBase {
             }
         }
 
-        File myFile = new File(settings.mFileName);
-        if(myFile.exists() == false)
-        {
-            if(mGraphicPrintCallback != null)
-            {
-                mGraphicPrintCallback.error(PCConstants.PCIntentsFileNotFoundError, -1, null, settings);
-            }
-        }
-
-
         /*
         Launch timeout mechanism
          */
@@ -73,7 +63,7 @@ public class PCGraphicPrint extends PCIntentsBase {
         intent.putExtra(PCConstants.PCGraphicPrintServiceFileName, settings.mFileName);
 
         // Image rotation in degrees (0, 90, 180, 270)
-        intent.putExtra(PCConstants.PCGraphicPrintServiceRotation, settings.mRotation.toString());
+        intent.putExtra(PCConstants.PCGraphicPrintServiceRotation, settings.mRotation.toInt());
         // Image margin top in dots
         intent.putExtra(PCConstants.PCGraphicPrintServiceMarginTop, settings.mMarginTop);
         // Image margin left in dots
@@ -108,6 +98,8 @@ public class PCGraphicPrint extends PCIntentsBase {
                     // Handle unsuccessful print
                     // Error message (null on successful print)
                     String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
+                    if(errorMessage == null)
+                        errorMessage = PCConstants.getErrorMessage(resultCode);
                     if(mGraphicPrintCallback != null)
                     {
                         mGraphicPrintCallback.error(errorMessage, resultCode, resultData, settings);

@@ -61,9 +61,9 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
          */
         switch (settings.mFileMode)
         {
-            case PRINTER:
+            case PRINTCONNECTCONFIGFOLDER:
                 Log.d(TAG, "Printing from printer memory:" + settings.mTemplateFileName);
-                PrintTemplateFileNameFromPrinterFlashMemory(settings);
+                PrintTemplateFileNameFromPrintConnectAssetsFolder(settings);
                 break;
             case FILE_SYSTEM:
                 Log.d(TAG, "Printing from file system: " + settings.mTemplateFileName);
@@ -87,7 +87,7 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
         return zplString;
     }
 
-    private void PrintTemplateFileNameFromPrinterFlashMemory(final PCTemplateFileNamePrintSettings settings)
+    private void PrintTemplateFileNameFromPrintConnectAssetsFolder(final PCTemplateFileNamePrintSettings settings)
     {
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(PCConstants.PCComponentName,PCConstants.PCTemplatePrintService));
@@ -173,12 +173,12 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
 
         // Create the PrintConnect Intent
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.zebra.printconnect", "com.zebra.printconnect.print.TemplatePrintWithContentService"));
+        intent.setComponent(new ComponentName(PCConstants.PCComponentName, PCConstants.PCTemplatePrintWithContentService));
         // Set template data
-        intent.putExtra("com.zebra.printconnect.PrintService.TEMPLATE_DATA", templateBytes);
+        intent.putExtra(PCConstants.PCTemplatePrintWithContentServiceTemplateData, templateBytes);
         // Set variable data
         if ((settings.mVariableData != null) && (settings.mVariableData.size() > 0)) {
-            intent.putExtra("com.zebra.printconnect.PrintService.VARIABLE_DATA", settings.mVariableData);
+            intent.putExtra(PCConstants.PCTemplatePrintServiceVariableData, settings.mVariableData);
         }
         // Build result receiver to handle success and error
         ResultReceiver receiver = buildIPCSafeReceiver(new ResultReceiver(null)
@@ -194,7 +194,7 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
                 }
                 else
                 {
-                    String errorMessage = resultData.getString("com.zebra.printconnect.PrintService.ERROR_MESSAGE");
+                    String errorMessage = resultData.getString(PCConstants.PCErrorMessage);
                     if(errorMessage == null)
                         errorMessage = PCConstants.getErrorMessage(resultCode);
                     if (PCTemplateFileNamePrint.this.mPrintTemplateFileNameCallback != null) {
@@ -204,7 +204,7 @@ public class PCTemplateFileNamePrint extends PCIntentsBase {
             }
         });
         // Register receiver for success and error handling
-        intent.putExtra("com.zebra.printconnect.PrintService.RESULT_RECEIVER", receiver);
+        intent.putExtra(PCConstants.PCTemplatePrintServiceResultReceiver, receiver);
         // Send intent to PrintConnect
         this.mContext.startService(intent);
     }

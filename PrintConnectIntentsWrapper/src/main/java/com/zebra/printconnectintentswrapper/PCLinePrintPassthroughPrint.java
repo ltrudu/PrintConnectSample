@@ -39,6 +39,7 @@ public class PCLinePrintPassthroughPrint extends PCIntentsBase {
 
         mLinePrintPassthroughCallback = callback;
 
+        /*
         if(settings.mLineToPrint.isEmpty())
         {
             if(mLinePrintPassthroughCallback != null)
@@ -47,6 +48,7 @@ public class PCLinePrintPassthroughPrint extends PCIntentsBase {
                 return;
             }
         }
+        */
 
 
         /*

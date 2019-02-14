@@ -30,6 +30,45 @@ public class UrlPrintActivity extends Activity {
     private TextView et_status = null;
 
     private boolean verbose = false;
+    private QUIT_MODE quit_mode = QUIT_MODE.FINISH_AFFINITY;
+    private String componentName  ="";
+    private String fullyQualifiedClassName = "";
+
+    private enum QUIT_MODE
+    {
+        FINISH_AFFINITY,
+        FINISH_AND_REMOVE_TASK,
+        MOVE_TASK_TO_BACK_FALSE,
+        MOVE_TASK_TO_BACK_TRUE,
+        PRESS_BACK,
+        KILL_PROCESS,
+        SYSTEM_EXIT,
+        LAUNCH_INTENT;
+
+        public static QUIT_MODE getFromString(String quit_mode)
+        {
+            switch(quit_mode)
+            {
+                case "FINISH_AFFINITY":
+                    return FINISH_AFFINITY;
+                case "FINISH_AND_REMOVE_TASK":
+                    return FINISH_AND_REMOVE_TASK;
+                case "MOVE_TASK_TO_BACK_FALSE":
+                    return MOVE_TASK_TO_BACK_FALSE;
+                case "MOVE_TASK_TO_BACK_TRUE":
+                    return MOVE_TASK_TO_BACK_TRUE;
+                case "PRESS_BACK":
+                    return PRESS_BACK;
+                case "KILL_PROCESS":
+                    return KILL_PROCESS;
+                case "SYSTEM_EXIT":
+                    return SYSTEM_EXIT;
+                case "LAUNCH_INTENT":
+                    return LAUNCH_INTENT;
+            }
+            return FINISH_AFFINITY;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +84,37 @@ public class UrlPrintActivity extends Activity {
             String needVerboseMessages = uri.getQueryParameter("verbose");
             if(needVerboseMessages == null)
             {
-                needVerboseMessages = intent.getExtras().getString("verbose");
+                needVerboseMessages = intent.getExtras().getString("verbose", "false");
             }
 
             verbose = needVerboseMessages.equalsIgnoreCase("true");
+
+            String s_quit_mode = uri.getQueryParameter("quitmode");
+            if(s_quit_mode == null)
+            {
+                s_quit_mode = intent.getExtras().getString("quitmode", "FINISH_AFFINITY");
+            }
+
+            quit_mode = QUIT_MODE.getFromString(s_quit_mode);
+
+            if(quit_mode == QUIT_MODE.LAUNCH_INTENT)
+            {
+                componentName = uri.getQueryParameter("component");
+                if(componentName == null)
+                {
+                    componentName = intent.getExtras().getString("component");
+                }
+                fullyQualifiedClassName = uri.getQueryParameter("class");
+                if(fullyQualifiedClassName == null)
+                {
+                    fullyQualifiedClassName = intent.getExtras().getString("class");
+                }
+                if(componentName == null || componentName.isEmpty() || fullyQualifiedClassName == null || fullyQualifiedClassName.isEmpty())
+                {
+                    showMessage("component or class name is empty.\nSwitching back to Finish_Affinity quit mode.", false, 0);
+                    quit_mode = QUIT_MODE.FINISH_AFFINITY;
+                }
+            }
 
             String command = uri.getHost();
 
@@ -654,17 +720,24 @@ public class UrlPrintActivity extends Activity {
         }
         if(quit)
         {
-            //moveTaskToBack(false);
-
-            //super.onBackPressed();
-
-            //finishAffinity();
-            //android.os.Process.killProcess(android.os.Process.myPid());
-            //System.exit(0);
-
-            //finishAndRemoveTask();
-
-            finishAffinity();
+            switch(quit_mode)
+            {
+                case FINISH_AND_REMOVE_TASK:
+                    finishAndRemoveTask();
+                case KILL_PROCESS:
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                case MOVE_TASK_TO_BACK_FALSE:
+                    moveTaskToBack(false);
+                case MOVE_TASK_TO_BACK_TRUE:
+                    moveTaskToBack(true);
+                case PRESS_BACK:
+                    super.onBackPressed();
+                case SYSTEM_EXIT:
+                    System.exit(0);
+                case FINISH_AFFINITY:
+                default:
+                    finishAffinity();
+            }
         }
     }
 
