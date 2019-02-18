@@ -32,15 +32,12 @@ public class UrlPrintActivity extends Activity {
     private boolean verbose = false;
     private QUIT_MODE quit_mode = QUIT_MODE.FINISH_AFFINITY;
     private String componentName  ="";
-    private String fullyQualifiedClassName = "";
 
     private enum QUIT_MODE
     {
         FINISH_AFFINITY,
         FINISH_AND_REMOVE_TASK,
-        MOVE_TASK_TO_BACK_FALSE,
-        MOVE_TASK_TO_BACK_TRUE,
-        PRESS_BACK,
+        MOVE_TASK_TO_BACK,
         KILL_PROCESS,
         SYSTEM_EXIT,
         LAUNCH_INTENT;
@@ -53,12 +50,8 @@ public class UrlPrintActivity extends Activity {
                     return FINISH_AFFINITY;
                 case "FINISH_AND_REMOVE_TASK":
                     return FINISH_AND_REMOVE_TASK;
-                case "MOVE_TASK_TO_BACK_FALSE":
-                    return MOVE_TASK_TO_BACK_FALSE;
-                case "MOVE_TASK_TO_BACK_TRUE":
-                    return MOVE_TASK_TO_BACK_TRUE;
-                case "PRESS_BACK":
-                    return PRESS_BACK;
+                case "MOVE_TASK_TO_BACK":
+                    return MOVE_TASK_TO_BACK;
                 case "KILL_PROCESS":
                     return KILL_PROCESS;
                 case "SYSTEM_EXIT":
@@ -104,14 +97,9 @@ public class UrlPrintActivity extends Activity {
                 {
                     componentName = intent.getExtras().getString("component");
                 }
-                fullyQualifiedClassName = uri.getQueryParameter("class");
-                if(fullyQualifiedClassName == null)
+                if(componentName == null || componentName.isEmpty())
                 {
-                    fullyQualifiedClassName = intent.getExtras().getString("class");
-                }
-                if(componentName == null || componentName.isEmpty() || fullyQualifiedClassName == null || fullyQualifiedClassName.isEmpty())
-                {
-                    showMessage("component or class name is empty.\nSwitching back to Finish_Affinity quit mode.", false, 0);
+                    showMessage("Error !!\nComponent name is empty.\nSwitching to default mode: FINISH_AFFINITY.", false, 0);
                     quit_mode = QUIT_MODE.FINISH_AFFINITY;
                 }
             }
@@ -693,7 +681,7 @@ public class UrlPrintActivity extends Activity {
 
     private void showMesageAndQuit(String message)
     {
-        showMessage(message, true, 2000);
+        showMessage(message, true, 100);
     }
 
     private void showMessage(final String message, boolean quit, int sleepTime)
@@ -724,16 +712,28 @@ public class UrlPrintActivity extends Activity {
             {
                 case FINISH_AND_REMOVE_TASK:
                     finishAndRemoveTask();
+                    break;
                 case KILL_PROCESS:
                     android.os.Process.killProcess(android.os.Process.myPid());
-                case MOVE_TASK_TO_BACK_FALSE:
-                    moveTaskToBack(false);
-                case MOVE_TASK_TO_BACK_TRUE:
+                    break;
+                case MOVE_TASK_TO_BACK:
                     moveTaskToBack(true);
-                case PRESS_BACK:
-                    super.onBackPressed();
+                    break;
                 case SYSTEM_EXIT:
                     System.exit(0);
+                    break;
+                case LAUNCH_INTENT:
+                    Intent intent = getPackageManager().getLaunchIntentForPackage(componentName);
+                    if(intent == null) {
+                        try {
+                            // if play store installed, open play store, else open browser
+                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + componentName));
+                        } catch (Exception e) {
+                            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + componentName));
+                        }
+                    }
+                    startActivity(intent);
+                    break;
                 case FINISH_AFFINITY:
                 default:
                     finishAffinity();

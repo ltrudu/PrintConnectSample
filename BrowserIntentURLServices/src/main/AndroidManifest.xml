@@ -17,67 +17,67 @@
                 <data android:scheme="plaintext"
                     android:host="printzpl"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="base64encoded"
                     android:host="printzpl"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="plaintext"
                     android:host="printtemplatefile"
                     android:path="/"/>
-            </intent-filter>
+ <!--           </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="base64encoded"
                     android:host="printtemplatefile"
                     android:path="/"/>
-            </intent-filter>
+ <!--           </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="plaintext"
                     android:host="printsingleline"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="base64encoded"
                     android:host="printsingleline"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="plaintext"
                     android:host="passthrough"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="base64encoded"
                     android:host="passthrough"
                     android:path="/"/>
-            </intent-filter>
+<!--            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.BROWSABLE"/>-->
                 <data android:scheme="plaintext"
                     android:host="unselect"
                     android:path="/"/>
