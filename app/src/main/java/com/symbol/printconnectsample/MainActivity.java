@@ -51,132 +51,66 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent intent = getIntent();
-        if(Intent.ACTION_VIEW.equals(intent.getAction())){
-            Uri uri = intent.getData();
-
-            String base64EncodedData = uri.getQueryParameter("template");
-            String base64CommaSeparatedVariableData = uri.getQueryParameter("variables");
-
-            // Decode template if found
-            if(base64EncodedData != null) {
-                byte[] templateAsByteArray = Base64.decode(base64EncodedData, Base64.DEFAULT);
-                if(templateAsByteArray == null)
-                {
-                    Log.d(TAG, "Print error: Could not decode template data byte array.");
-                    Toast.makeText(MainActivity.this, "Print error: Could not decode template data byte array.", Toast.LENGTH_LONG).show();
-                    finishAffinity();
-                    return;
-                }
-
-                String decodedTemplate = new String(templateAsByteArray, StandardCharsets.US_ASCII);
-
-                if(decodedTemplate == null)
-                {
-                    Log.d(TAG, "Print error: Could not interpret decoded template data to String.");
-                    Toast.makeText(MainActivity.this, "Print error: Could not interpret decoded template data to UTF-8 String.", Toast.LENGTH_LONG).show();
-                    finishAffinity();
-                    return;
-                }
-
-                // Decode variable data if found
-                HashMap<String, String> variableData = null;
-                if (base64CommaSeparatedVariableData != null) {
-                    byte[] dataAsByteArray = Base64.decode(base64CommaSeparatedVariableData, Base64.DEFAULT);
-                    if(dataAsByteArray == null)
-                    {
-                        Log.d(TAG, "Print error: Could not decode variable data byte array.");
-                        Toast.makeText(MainActivity.this, "Print error: Could not decode variable data byte array.", Toast.LENGTH_LONG).show();
-                        finishAffinity();
-                        return;
-                    }
-                    String decodedCommaSeparatedVariables = new String(dataAsByteArray, StandardCharsets.US_ASCII);
-                    if(decodedTemplate == null)
-                    {
-                        Log.d(TAG, "Print error: Could not interpret decoded variable data to String.");
-                        Toast.makeText(MainActivity.this, "Print error: Could not interpret decoded variable data to UTF-8 String.", Toast.LENGTH_LONG).show();
-                        finishAffinity();
-                        return;
-                    }
-
-                    String[] splittedArray = decodedCommaSeparatedVariables.split(";");
-                    if (splittedArray.length > 1) {
-                        variableData = new HashMap<String, String>();
-                        for (int i = 0; i < splittedArray.length; i = i + 2) {
-                            variableData.put(splittedArray[i], splittedArray[i + 1]);
-                        }
-                    }
-                    else
-                    {
-                        Log.d(TAG, "Print error: Could not find at least one key-value pair in the decoded variable data. Length=" + splittedArray.length);
-                        Toast.makeText(MainActivity.this, "Print error: Could not find at least one key-value pair in the decoded variable data. Length=" + splittedArray.length, Toast.LENGTH_LONG).show();
-                        finishAffinity();
-                        return;
-                    }
-                }
-
-                templatePrintWithContent(decodedTemplate, variableData);
-            }
-            else
-            {
-                Log.d(TAG, "Print error: " + "No template data found.");
-                Toast.makeText(MainActivity.this, "Print error: " + "No template data found.", Toast.LENGTH_LONG).show();
-                finishAffinity();
-            }
-        }
-
         setContentView(R.layout.activity_main);
 
         et_results = (TextView)findViewById(R.id.et_results);
         sv_results = (ScrollView)findViewById(R.id.sv_results);
 
-        Button btEnableDW = (Button) findViewById(R.id.button_templateprint);
-        btEnableDW.setOnClickListener(new View.OnClickListener() {
+        Button btTemplatePrint = (Button) findViewById(R.id.button_templateprint);
+        btTemplatePrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {  templatePrint();  }
         });
 
-        Button btDisableDW = (Button) findViewById(R.id.button_templateprintwithcontent);
-        btDisableDW.setOnClickListener(new View.OnClickListener() {
+        Button btTemplatePrintWithContent = (Button) findViewById(R.id.button_templateprintwithcontent);
+        btTemplatePrintWithContent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { templatePrintWithContent(); }
         });
 
-        Button btStart = (Button) findViewById(R.id.button_lppassthrough);
-        btStart.setOnClickListener(new View.OnClickListener() {
+        Button btLinePassthrough = (Button) findViewById(R.id.button_lppassthrough);
+        btLinePassthrough.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { linePrintPassThrough(); }
         });
 
-        Button btStop = (Button) findViewById(R.id.button_passthrough);
-        btStop.setOnClickListener(new View.OnClickListener() {
+        Button btPassthrough = (Button) findViewById(R.id.button_passthrough);
+        btPassthrough.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 passthrough();
             }
         });
 
-        Button btToggle = (Button) findViewById(R.id.button_graphicprint);
-        btToggle.setOnClickListener(new View.OnClickListener() {
+        Button btGraphicPrint = (Button) findViewById(R.id.button_graphicprint);
+        btGraphicPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 graphicPrint();
             }
         });
 
-        Button btEnable = (Button) findViewById(R.id.button_printerstatus);
-        btEnable.setOnClickListener(new View.OnClickListener() {
+        Button btPrinterStatus = (Button) findViewById(R.id.button_printerstatus);
+        btPrinterStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 printerStatus();
             }
         });
 
-        Button btDisable = (Button) findViewById(R.id.button_unselect);
-        btDisable.setOnClickListener(new View.OnClickListener() {
+        Button btUnselectPrinter = (Button) findViewById(R.id.button_unselect);
+        btUnselectPrinter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 unselectPrinter();
+            }
+        });
+
+        Button btConnectToPrinter = (Button) findViewById(R.id.button_connect_printer);
+        btConnectToPrinter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connectPrinter();
             }
         });
 
@@ -236,6 +170,37 @@ public class MainActivity extends AppCompatActivity {
             mScrollDownHandler = null;
         }
         super.onPause();
+    }
+
+    private void connectPrinter(){
+        mIntentStartDate = new Date();
+        PCConnectPrinter connectPrinter = new PCConnectPrinter(this);
+        PCConnectPrinterSettings settings = new PCConnectPrinterSettings()
+        {{
+            mCommandId = "connectPrinter";
+            mEnableTimeOutMechanism = false;
+            mBluetoothMacAddress = "AC3FA4CE7931";
+            //mWifiMacAddress = "AC3FA4CE7930";
+            //mEthernetMacAddress = "";
+        }};
+        connectPrinter.execute(settings, new PCConnectPrinter.onConnectPrinterResult() {
+            @Override
+            public void success(PCConnectPrinterSettings settings) {
+                addLineToResults("Connect to printer succeeded");
+                addTotalTimeToResults();
+            }
+
+            @Override
+            public void error(String errorMessage, PCConnectPrinterSettings settings) {
+                addLineToResults("Error while trying to connect to printer: \n" + errorMessage+ "\nBTMac=" + settings.mBluetoothMacAddress + "\nWifiMac="+settings.mWifiMacAddress+"\nEthernetMac="+settings.mEthernetMacAddress);
+                addTotalTimeToResults();
+            }
+
+            @Override
+            public void timeOut(PCConnectPrinterSettings settings) {
+                addLineToResults("Timeout while trying to connect to printer:\nBTMac=" + settings.mBluetoothMacAddress + "\nWifiMac="+settings.mWifiMacAddress+"\nEthernetMac="+settings.mEthernetMacAddress);
+            }
+        });
     }
 
     private void unselectPrinter() {
