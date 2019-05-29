@@ -1,0 +1,2 @@
+https://github.com/ltrudu/PrintConnectSample
+https://github.com/ltrudu/WindevMobilePrintConnectWrapper (sample directly available inside the IDE "sample brower", look for print)
