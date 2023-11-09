@@ -4,8 +4,17 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PrintConnectSample.iml" filepath="$PROJECT_DIR$/PrintConnectSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.iml" filepath="$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.main.iml" filepath="$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.iml" filepath="$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.main.iml" filepath="$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.unitTest.iml" />
     </modules>
   </component>
 </project>

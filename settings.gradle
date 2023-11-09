@@ -1,1 +1,2 @@
-include ':app', ':PrintConnectIntentsWrapper', ':BrowserIntentURLServices'
+//TODO: uncomment to access to the sample app
+include ':PrintConnectIntentsWrapper'//,':app',':BrowserIntentURLServices'
