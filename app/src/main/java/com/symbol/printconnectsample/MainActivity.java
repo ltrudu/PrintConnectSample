@@ -1,5 +1,6 @@
 package com.symbol.printconnectsample;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
@@ -125,6 +126,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void templatePrintWithContent(final String zplToPrint, final HashMap<String, String> variableData) {
+
+
+
+
 
         PCTemplateStringPrint templateStringPrint = new PCTemplateStringPrint(this);
 
@@ -320,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //*/
     }
+
 
     private void linePrintPassThrough() {
         mIntentStartDate = new Date();
@@ -547,4 +553,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
 }

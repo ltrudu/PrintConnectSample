@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BrowserIntentURLServices/BrowserIntentURLServices.iml" filepath="$PROJECT_DIR$/BrowserIntentURLServices/BrowserIntentURLServices.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PrintConnectIntentsWrapper/PrintConnectIntentsWrapper.iml" filepath="$PROJECT_DIR$/PrintConnectIntentsWrapper/PrintConnectIntentsWrapper.iml" />
       <module fileurl="file://$PROJECT_DIR$/PrintConnectSample.iml" filepath="$PROJECT_DIR$/PrintConnectSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.iml" filepath="$PROJECT_DIR$/.idea/modules/BrowserIntentURLServices/PrintConnectSample.BrowserIntentURLServices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.iml" filepath="$PROJECT_DIR$/.idea/modules/PrintConnectIntentsWrapper/PrintConnectSample.PrintConnectIntentsWrapper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PrintConnectSample.app.iml" />
     </modules>
   </component>
 </project>
