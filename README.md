@@ -3,7 +3,7 @@
 
 Uncomment projects in settings.graddle to get access to URLIntents and SampleApp.
 
-Library is available on JitPack:
+PrintConnectIntentsWrapper library is available on JitPack:
 
 	dependencyResolutionManagement {
 		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
