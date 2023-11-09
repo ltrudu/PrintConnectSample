@@ -1,3 +1,23 @@
+*Please be aware that this library / application / sample is provided as a community project without any guarantee of support*
+=========================================================
+
+Uncomment projects in settings.graddle to get access to URLIntents and SampleApp.
+
+Library is available on JitPack:
+
+	dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+
+ 	dependencies {
+	        implementation 'com.github.ltrudu:PrintConnectSample:1.2.739'
+	}
+
+
 # END USER LICENSE AGREEMENT (UNRESTRICTED SOFTWARE)
 
 
